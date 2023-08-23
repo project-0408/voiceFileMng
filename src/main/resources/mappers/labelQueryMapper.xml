@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.FileDB.FileDbMng.dao.FileDbDao">
+    <insert id="insertDB" parameterType="fileDbVO">
+        INSERT INTO stt_voice_log
+        (
+            vl_model
+        ,   vl_datetime
+        ,   vl_result
+        ,   vl_local
+        ,   vl_recordtime
+        ,   vl_stt_status
+        ,   vl_language_kr
+        ,   vl_language_en
+        ,   vl_group
+        )
+            VALUE (
+            #{model}
+            , now()
+            , #{sttResult}
+            , #{local}
+            , #{recordTime}
+            , #{sttCode}
+            , #{languageKr}
+            , #{languageEn}
+            , 'foit'
+            )
+    </insert>
+
+    <update id="updateId">
+        UPDATE stt_voice_log
+        set vf_id = (SELECT MAX(vl_id) FROM stt_voice_log)
+        WHERE vl_id = (SELECT MAX(vl_id) FROM stt_voice_log);
+    </update>
+
+    <insert id="insertFileDB" parameterType="String">
+        INSERT INTO stt_voice_file
+        (
+         vf_id
+        ,vf_name
+        )
+        VALUES (
+                   LAST_INSERT_ID()
+               , #{fileName}
+               )
+    </insert>
+</mapper>
